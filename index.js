@@ -1,48 +1,25 @@
-const mongoose = require("mongoose")
 
-const {Schema,model} =require("mongoose")
-const connection = mongoose.connect("mongodb://localhost:27017/BoxOffice")
+const express =require("express");
+const { json } = require("express/lib/response");
+const {Movie,connection}=require("./db")
 
-const MovieSchema = new Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    rating: {
-        type: Number
-    },
-    releaseDate: {
-        type: Date
-    },
-    boxOfficeCollection:{type:Number,default:1000,min:0,},
-    cast:{type:[String]},
-    language:{
-        type:String,
-        enum:["English","Hindi","Marathi"]
+const app=express();
+
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
+
+app.get("/movies",async(req,res)=>{
+
+   const movies = await Movie.find();
+   console.log(movies)
+   return res.json(movies);
+})
+
+app.listen(8080,async()=>{
+    try{
+        await connection    
+    }catch(err){
+        console.log("not connected to server")
     }
-
+    console.log("port is on")
 })
-
-
-const Main = async () => {
-
-    const conn = await connection;
-    console.log("connected")
-
-    const Movie = model("movie",MovieSchema)
-
-const movie = new Movie({
-    title:"avengers",
-    rating:4.5,
-    releaseDate:new Date(),
-    boxOfficeCollection:9899,
-    cast:["TONY","HULK","CAPTAIN"],
-    language:"English"
-})
-
-    await movie.save();
-    console.log("saved")
-
-    conn.disconnect();
-};
-Main();
