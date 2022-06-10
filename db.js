@@ -6,21 +6,21 @@ const {Schema,model} =require("mongoose")
 const connection = mongoose.connect("mongodb://localhost:27017/BoxOffice")
 
 const MovieSchema = new Schema({
-    title: {
+    Title: {
         type: String,
         required: true
     },
-    rating: {
+    "IMDB Rating": {
         type: Number
     },
-    releaseDate: {
+    "Release Date": {
         type: Date
     },
-    boxOfficeCollection:{type:Number,default:1000,min:0,},
+    "Worldwide Gross":{type:Number,default:1000,min:0,},
     cast:{type:[String]},
     language:{
         type:String,
-        enum:["English","Hindi","Marathi"]
+        enum:["English","Hindi","Marathi"],default:"English"
     }
 
 })
