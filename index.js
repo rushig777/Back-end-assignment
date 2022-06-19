@@ -27,7 +27,7 @@ app.get("/movies/search",async(req,res)=>{
 
     let input=req.query.search
 console.log(input)
-    const movies = await Movie.find({$match:{"Title":input}}).limit(15);
+    const movies = await Movie.find({Title:{input}}).limit(15);
      
    return res.json(movies);
 
